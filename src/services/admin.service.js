@@ -29,7 +29,7 @@ const setAllowLeaderboard = async (req) => {
 };
 
 const getLeaderboard = async (req) => {
-    return await User.find({role: 'user'}).sort({shillingPoints:-1}).limit(5)
+    return await User.find({role: 'user'}).sort({shillingPoints:-1})
      
 };
 

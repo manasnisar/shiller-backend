@@ -68,6 +68,26 @@ const countEvidences = async () => {
     }
 };
 
+const countApprovedEvidences = async (req) => {
+    const approved = await Evidence.countDocuments({
+        userId: req.params.userId,
+        status: 'approved'
+    })
+    return {
+        approved: approved
+    }
+};
+
+const countDeclinedEvidences = async (req) => {
+    const declined = await Evidence.countDocuments({
+        userId: req.params.userId,
+        status: 'declined'
+    })
+    return {
+        declined: declined,
+    }
+};
+
 const approveEvidence = async (req) => {
     const evidenceId = req.params.id
     const evidence = await Evidence.findByIdAndUpdate({ _id: evidenceId }, { $set: { status: "approved" } }, { new: true });
@@ -78,7 +98,7 @@ const approveEvidence = async (req) => {
 
 const declineEvidence = async (req) => {
     const evidenceId = req.params.id
-    const evidence = await Evidence.updateOne({ _id: evidenceId }, { $set: { status: "decline" } });
+    const evidence = await Evidence.updateOne({ _id: evidenceId }, { $set: { status: "declined" } });
     return evidence
 };
 
@@ -109,5 +129,7 @@ module.exports = {
     getAllPendingEvidences,
     approveEvidence,
     declineEvidence,
-    approveBulkEvidence
+    approveBulkEvidence,
+    countDeclinedEvidences,
+    countApprovedEvidences
 };

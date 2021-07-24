@@ -4,20 +4,6 @@ const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
 const { evidenceService } = require('../services');
 
-
-// const uploadLogo = catchAsync(async (req, res) => {
-//     const merchant = await merchantService.getMerchantById(req.params.merchantId);
-//     if (!merchant) {
-//       throw new ApiError(httpStatus.NOT_FOUND, 'Merchant not found');
-//     }
-//     const filename = merchantService.hashCode(merchant.url);
-
-//     const fileUrl = await merchantService.fileUpload(myFile, filename);
-//     const response = await merchantService.updateMerchantById(req.params.merchantId, { logoUrl: fileUrl });
-//     response.logoUrl = fileUrl;
-//     res.send(response);
-//   });
-
 const uploadEvidence = catchAsync(async (req, res) => {
     const evidence = await evidenceService.uploadEvidence(req);
     res.status(httpStatus.CREATED).send(evidence);
@@ -33,6 +19,15 @@ const getAllPendingEvidences = catchAsync(async (req, res) => {
     res.status(httpStatus.CREATED).send(evidences);
 });
 
+const countDeclinedEvidences = catchAsync(async (req, res) => {
+    const evidences = await evidenceService.countDeclinedEvidences(req);
+    res.status(httpStatus.CREATED).send(evidences);
+});
+
+const countApprovedEvidences = catchAsync(async (req, res) => {
+    const evidences = await evidenceService.countApprovedEvidences(req);
+    res.status(httpStatus.CREATED).send(evidences);
+});
 
 const getApprovedEvidences = catchAsync(async (req, res) => {
     const evidences = await evidenceService.getApprovedEvidences(req);
@@ -69,5 +64,7 @@ module.exports = {
     getAllPendingEvidences,
     approveEvidence,
     declineEvidence,
-    approveBulkEvidence
+    approveBulkEvidence,
+    countDeclinedEvidences,
+    countApprovedEvidences,
 };
