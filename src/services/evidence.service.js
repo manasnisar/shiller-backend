@@ -6,7 +6,6 @@ const fs = require('fs');
 
 const uploadEvidence = async (req) => {
     var appDir = path.dirname(require.main.filename);
-    console.log(appDir)
     const myFile = req.file;
     if (!myFile) throw ApiError(httpStatus.BAD_REQUEST, 'Upload file not found');
 
