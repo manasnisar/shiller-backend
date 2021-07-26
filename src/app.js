@@ -14,16 +14,16 @@ const routes = require('./routes/v1');
 const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError');
 const multer = require('multer');
- 
+
 let storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'src/uploads')
-    },
-    filename: (req, file, cb) => {
-        cb(null, file.fieldname + '-' + Date.now())
-    }
+  destination: (req, file, cb) => {
+    cb(null, 'src/uploads')
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.fieldname + '-' + Date.now())
+  }
 });
- 
+
 let upload = multer({ storage: storage });
 
 const app = express();
@@ -51,10 +51,16 @@ app.use(compression());
 
 // enable cors
 const corsOptions = {
-  origin: ['http://localhost:3000','https://shiller-frontend.herokuapp.com'],
+  origin: ['http://localhost:3000', 'https://shiller-frontend.herokuapp.com'],
 };
+let allowedOrigins = ['http://localhost:3000', 'https://shiller-frontend.herokuapp.com']
+
 app.use(function (req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', ['http://localhost:3000', 'https://shiller-frontend.herokuapp.com']);
+  let origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.header("Access-Control-Allow-Origin", origin); // restrict it to the required domain
+  }
+  res.setHeader('Access-Control-Allow-Origin', origin);
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
   res.setHeader('Access-Control-Allow-Credentials', true);
